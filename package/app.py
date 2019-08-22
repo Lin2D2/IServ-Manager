@@ -1,6 +1,8 @@
-from PyQt5 import QtWidgets, uic
+from PyQt5 import QtWidgets
 import sys
-from package.ui.window import Window
+import os.path
+from package.util.slash import slash
+from package.ui.window import Window, Dialog
 
 class App():
     def __init__(self):
@@ -23,9 +25,17 @@ class App():
 
         statusbar = window.findChild(QtWidgets.QStatusBar, 'statusbar')
         statusbar.showMessage("Ready")
-        
+
+        self.first_start()
         app.exec_()
-        
+
+
+    def first_start(self):
+        if not os.path.exists('package' + slash + 'util' + slash + 'settings.json'):
+            app2 = QtWidgets.QApplication(sys.argv)
+            dialog = Dialog()
+            app2.exec_()
+
     def change_day(self):
         if self.change_day_button.text() == "Tomorow":
             self.change_day_button.setText("Today")

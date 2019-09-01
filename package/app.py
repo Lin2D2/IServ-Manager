@@ -2,7 +2,8 @@ from PyQt5 import QtWidgets
 import sys
 import os.path
 from package.util.slash import slash
-from package.ui.window import Window, Dialog
+from package.ui.window import Window
+from package.app_dialog import App_Dialog
 
 class App():
     def __init__(self):
@@ -27,14 +28,16 @@ class App():
         statusbar.showMessage("Ready")
 
         self.first_start()
-        app.exec_()
 
+        rc = app.exec_()
+        del window
+        del app
+        sys.exit( rc )
 
     def first_start(self):
         if not os.path.exists('package' + slash + 'util' + slash + 'settings.json'):
-            app2 = QtWidgets.QApplication(sys.argv)
-            dialog = Dialog()
-            app2.exec_()
+            App_Dialog()
+
 
     def change_day(self):
         if self.change_day_button.text() == "Tomorow":

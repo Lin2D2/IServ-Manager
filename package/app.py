@@ -1,4 +1,5 @@
 from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import *
 import sys
 import os.path
 from package.util.slash import slash
@@ -19,8 +20,8 @@ class App():
         accept_line_button = window.findChild(QtWidgets.QPushButton, 'pushButton_accept_line')
         accept_line_button.clicked.connect(self.accept_line)
 
-        self.table_widget = window.findChild(QtWidgets.QTableWidget, 'tableWidget')
-        self.table_creator("today")
+        self.main_table = window.findChild(QtWidgets.QTableWidget, 'tableWidget')
+        self.main_table_creator("today")
 
         line_edit = window.findChild(QtWidgets.QLineEdit, 'lineEdit')
 
@@ -36,16 +37,16 @@ class App():
 
     def first_start(self):
         if not os.path.exists('package' + slash + 'util' + slash + 'settings.json'):
-            App_Dialog()
+            App_Dialog()     # fist of we wont creat such file because we need password an username for each session
 
 
     def change_day(self):
         if self.change_day_button.text() == "Tomorow":
             self.change_day_button.setText("Today")
-            self.table_creator("Tomorow")
+            self.main_table_creator("Tomorow")
         elif self.change_day_button.text() == "Today":
             self.change_day_button.setText("Tomorow")
-            self.table_creator("Today")
+            self.main_table_creator("Today")
 
 
     def update(self):
@@ -57,14 +58,14 @@ class App():
     def accept_line(self):
         print("accept line")
 
-    def table_creator(self, day):
+    def main_table_creator(self, day):
         table = []
         x, y = 12, 24
 
-        self.table_widget.setRowCount(y)
-        self.table_widget.setColumnCount(x)
+        self.main_table.setRowCount(y)
+        self.main_table.setColumnCount(x)
         for rows in table:
             row = rows
             for colum in row:
-                self.table_widget.setItem(table.index(rows), row.index(colum), QTableWidgetItem(colum))
+                self.main_table.setItem(table.index(rows), row.index(colum), QTableWidgetItem(colum))
 

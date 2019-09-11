@@ -23,9 +23,7 @@ class App_Dialog():
         #self.dialog = None
 
     def dialog_ok(self):
-        username_line_content = self.username_line.text()
-        password_line_content = self.password_line.text()
-        print(username_line_content)
-        print(password_line_content)
+        self.username_line_content = self.username_line.text()
+        self.password_line_content = self.password_line.text()
         self.dialog.close()
-        #self.dialog = None
+

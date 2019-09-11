@@ -32,7 +32,7 @@ class App():
         rc = app.exec_()
         del window
         del app
-        sys.exit( rc )
+        sys.exit(rc)
 
     def first_start(self):
         if not os.path.exists('package' + slash + 'util' + slash + 'settings.json'):

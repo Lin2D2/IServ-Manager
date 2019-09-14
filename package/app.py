@@ -26,7 +26,7 @@ class App():
 
         line_edit = window.findChild(QtWidgets.QLineEdit, 'lineEdit')
 
-        #self.title = window.findChild(QtWidgets.QLabel, 'textEdit')
+        self.title = window.findChild(QtWidgets.QLabel, 'label')
 
         self.text_edit = window.findChild(QtWidgets.QTextEdit, 'textEdit')
 
@@ -48,16 +48,17 @@ class App():
         if self.change_day_button.text() == "Tomorow":
             self.change_day_button.setText("Today")
             self.active_day = "Tomorow"
-            self.main_table_creator()
         elif self.change_day_button.text() == "Today":
             self.change_day_button.setText("Tomorow")
             self.active_day = "Today"
-            self.main_table_creator()
+        self.set_title()
+        self.set_text_edit()
+        self.main_table_creator()
 
     def set_payload(self, username, password):
         self.payload = {'_username': username, '_password': password}
         self.get_page = Get_Page(self.payload)
-        self.set_title
+        self.set_title()
         self.set_text_edit()
         self.main_table_creator()
 
@@ -65,7 +66,7 @@ class App():
     def update(self):
         print("update")
         self.get_page.update()
-        self.set_title
+        self.set_title()
         self.set_text_edit()
         self.main_table_creator()
 
@@ -76,11 +77,11 @@ class App():
     def accept_line(self):
         print("accept line")
 
-    #def set_title(self):
-     #   if self.active_day == "Tomorow":
-      #      self.title.setText(self.get_page.massage_tomorow)
-       # else:
-        #    self.title.setText(self.get_page.massage_today)
+    def set_title(self):
+        if self.active_day == "Tomorow":
+            self.title.setText(self.get_page.title_tomorow)
+        else:
+            self.title.setText(self.get_page.title_today)
 
     def set_text_edit(self):
         if self.active_day == "Tomorow":

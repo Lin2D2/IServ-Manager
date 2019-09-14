@@ -49,10 +49,10 @@ class App():
     def change_day(self):
         if self.change_day_button.text() == "Tomorow":
             self.change_day_button.setText("Today")
-            self.main_table_creator("Tomorow")
+            self.main_table_creator(1)
         elif self.change_day_button.text() == "Today":
             self.change_day_button.setText("Tomorow")
-            self.main_table_creator("Today")
+            self.main_table_creator(0)
 
     def set_payload(self, username, password):
         self.payload = {'_username': username, '_password': password}
@@ -62,9 +62,9 @@ class App():
         print("update")
         self.table_content = get_page(self.payload, self.url_s, self.url_today, self.url_tomorow)
         if self.change_day_button.text() == "Tomorow":
-            self.main_table_creator("Today")
+            self.main_table_creator(0)
         elif self.change_day_button.text() == "Today":
-            self.main_table_creator("Tomorow")
+            self.main_table_creator(1)
 
     def settings(self):
         print("settings")
@@ -73,13 +73,8 @@ class App():
     def accept_line(self):
         print("accept line")
 
-    def main_table_creator(self, day="Today"):
+    def main_table_creator(self, day_num):
         table = []
-
-        if day == "Tomorow":
-            day_num = 1
-        else:
-            day_num = 0
 
         if self.table_content == None:
             self.table_content = get_page(self.payload, self.url_s, self.url_today, self.url_tomorow)

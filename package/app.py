@@ -25,8 +25,7 @@ class App():
         self.url_today = 'https://gymherderschule.de/iserv/infodisplay/file/23/infodisplay/0/SchuelerOnline/subst_001.htm'
         self.url_tomorow = 'https://gymherderschule.de/iserv/infodisplay/file/23/infodisplay/0/SchuelerOnline/subst_002.htm'
         # *temp
-        self.username = None
-        self.password = None
+        self.payload = None
         self.table_content = None
         self.main_table = window.findChild(QtWidgets.QTableWidget, 'tableWidget')
         self.main_table.setColumnCount(12)
@@ -56,13 +55,16 @@ class App():
             self.main_table_creator("Today")
 
     def set_payload(self, username, password):
-        self.username = username
-        self.password = password
+        self.payload = {'_username': username, '_password': password}
 
 
     def update(self):
         print("update")
-        self.main_table_creator()
+        self.table_content = get_page(self.payload, self.url_s, self.url_today, self.url_tomorow)
+        if self.change_day_button.text() == "Tomorow":
+            self.main_table_creator("Today")
+        elif self.change_day_button.text() == "Today":
+            self.main_table_creator("Tomorow")
 
     def settings(self):
         print("settings")
@@ -73,7 +75,6 @@ class App():
 
     def main_table_creator(self, day="Today"):
         table = []
-        payload = {'_username': self.username, '_password': self.password}
 
         if day == "Tomorow":
             day_num = 1
@@ -81,7 +82,7 @@ class App():
             day_num = 0
 
         if self.table_content == None:
-            self.table_content = get_page(payload, self.url_s, self.url_today, self.url_tomorow)
+            self.table_content = get_page(self.payload, self.url_s, self.url_today, self.url_tomorow)
 
         for row in self.table_content[day_num][2]:
             colums = row.split("|")

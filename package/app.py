@@ -5,7 +5,7 @@ import os.path
 from package.util.slash import slash
 from package.ui.window import Window
 from package.app_dialog import App_Dialog
-from package.get_plan import Get_Page
+from package.table_util import Get_Page
 
 class App():
     def __init__(self):

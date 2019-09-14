@@ -25,6 +25,5 @@ class App_Dialog():
 
     def dialog_ok(self):
         self.parent.set_payload(self.username_line.text(), self.password_line.text())
-        self.parent.main_table_creator()
         self.dialog.close()
 

@@ -27,6 +27,7 @@ class App():
         # *temp
         self.main_table = window.findChild(QtWidgets.QTableWidget, 'tableWidget')
         #self.main_table_creator("today")
+        self.main_table.setColumnCount(12)
 
         line_edit = window.findChild(QtWidgets.QLineEdit, 'lineEdit')
 
@@ -72,11 +73,9 @@ class App():
             del colums[0]
             table.append(colums)
         del table[0]
-        x, y = 12, len(table_raw)
+        y = len(table_raw)
         self.main_table.setRowCount(y)
-        self.main_table.setColumnCount(x)
         for rows in table:
             row = rows
             for colum in row:
                 self.main_table.setItem(table.index(rows), row.index(colum), QTableWidgetItem(colum))
-

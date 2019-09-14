@@ -20,23 +20,16 @@ def formatting(source):
     raw_massage = soup(source).find(class_="info")
     massage = soup(str(raw_massage)).get_text(separator="")
     contents = re.split("\n", contents)
-    return title, massage, contents
+    return [title, massage, contents]
 
 
-def get_page(payload, url_s, url, url_2=None):
+def get_page(payload, url_s, url_today, url_tomorow):
     sess = requests.Session()
     sess.post(url_s, data=payload, headers=headers)
     time.sleep(0.1)
-    request_data = sess.get(url, headers=headers)
-    if url_2:
-        request_data_2 = sess.get(url_2, headers=headers)
-        title, massage, contents = formatting(request_data.content)
-        first = [title, massage, contents]
-        title, massage, contents = formatting(request_data_2.content)
-        secound = [title, massage, contents]
-        return first, secound
-    else:
-        title, massage, contents = formatting(request_data.content)
-        first = [title, massage, contents]
-        return first
+    request_data_today = sess.get(url_today, headers=headers)
+    request_data_tomorow = sess.get(url_tomorow, headers=headers)
+    content_today = formatting(request_data_today.content)
+    content_tomorow = formatting(request_data_tomorow.content)
+    return [content_today, content_tomorow]
 

@@ -5,7 +5,7 @@ import os.path
 from package.util.slash import slash
 from package.ui.window import Window
 from package.app_dialog import App_Dialog
-from package.get_plan import get_page
+from package.get_plan import Get_Page
 
 class App():
     def __init__(self):
@@ -20,13 +20,8 @@ class App():
         settings_button.clicked.connect(self.settings)
         accept_line_button = window.findChild(QtWidgets.QPushButton, 'pushButton_accept_line')
         accept_line_button.clicked.connect(self.accept_line)
-        # temp
-        self.url_s = 'https://gymherderschule.de/iserv/login_check'
-        self.url_today = 'https://gymherderschule.de/iserv/infodisplay/file/23/infodisplay/0/SchuelerOnline/subst_001.htm'
-        self.url_tomorow = 'https://gymherderschule.de/iserv/infodisplay/file/23/infodisplay/0/SchuelerOnline/subst_002.htm'
-        # *temp
         self.payload = None
-        self.table_content = None
+        self.active_day = "Today"
         self.main_table = window.findChild(QtWidgets.QTableWidget, 'tableWidget')
 
         line_edit = window.findChild(QtWidgets.QLineEdit, 'lineEdit')
@@ -48,22 +43,23 @@ class App():
     def change_day(self):
         if self.change_day_button.text() == "Tomorow":
             self.change_day_button.setText("Today")
-            self.main_table_creator("Tomorow")
+            self.active_day = "Tomorow"
+            self.main_table_creator()
         elif self.change_day_button.text() == "Today":
             self.change_day_button.setText("Tomorow")
-            self.main_table_creator("Today")
+            self.active_day = "Today"
+            self.main_table_creator()
 
     def set_payload(self, username, password):
         self.payload = {'_username': username, '_password': password}
+        self.get_page = Get_Page(self.payload)
+        self.main_table_creator()
 
 
     def update(self):
         print("update")
-        self.table_content = get_page(self.payload, self.url_s, self.url_today, self.url_tomorow)
-        if self.change_day_button.text() == "Tomorow":
-            self.main_table_creator("Today")
-        elif self.change_day_button.text() == "Today":
-            self.main_table_creator("Tomorow")
+        self.get_page.update()
+        self.main_table_creator()
 
     def settings(self):
         print("settings")
@@ -72,25 +68,21 @@ class App():
     def accept_line(self):
         print("accept line")
 
-    def main_table_creator(self, day="Today"):
+    def main_table_creator(self):
         table = []
 
-        if day == "Tomorow":
-            day_num = 1
+        if self.active_day == "Tomorow":
+            table_content = self.get_page.content_tomorow
         else:
-            day_num = 0
+            table_content = self.get_page.content_today
 
-        if self.table_content == None:
-            self.table_content = get_page(self.payload, self.url_s, self.url_today, self.url_tomorow)
-
-        for row in self.table_content[day_num][2]:
+        for row in table_content:
             colums = row.split("|")
             del colums[0]
             table.append(colums)
         del table[0]
         del table[0]
-        y = len(self.table_content[day_num][2])
-        self.main_table.setRowCount(y)
+        self.main_table.setRowCount(len(table_content))
         for rows in table:
             row = rows
             for colum in row:

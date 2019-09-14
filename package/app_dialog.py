@@ -4,7 +4,8 @@ from package.util.slash import slash
 from package.ui.window import Dialog
 
 class App_Dialog():
-    def __init__(self):
+    def __init__(self, parent):
+        self.parent = parent
         app = QtWidgets.QApplication(sys.argv)
         self.dialog = Dialog()
         accept_username_password = self.dialog.findChild(QtWidgets.QPushButton, 'pushButton_ok')
@@ -23,7 +24,6 @@ class App_Dialog():
         #self.dialog = None
 
     def dialog_ok(self):
-        self.username_line = self.username_line.text()
-        self.password_line = self.password_line.text()
+        self.parent.set_payload(self.username_line.text(), self.password_line.text())
         self.dialog.close()
 

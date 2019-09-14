@@ -27,6 +27,10 @@ class App():
 
         line_edit = window.findChild(QtWidgets.QLineEdit, 'lineEdit')
 
+        #self.title = window.findChild(QtWidgets.QLabel, 'textEdit')
+
+        self.text_edit = window.findChild(QtWidgets.QTextEdit, 'textEdit')
+
         statusbar = window.findChild(QtWidgets.QStatusBar, 'statusbar')
         statusbar.showMessage("Ready")
 
@@ -54,12 +58,16 @@ class App():
     def set_payload(self, username, password):
         self.payload = {'_username': username, '_password': password}
         self.get_page = Get_Page(self.payload)
+        self.set_title
+        self.set_text_edit()
         self.main_table_creator()
 
 
     def update(self):
         print("update")
         self.get_page.update()
+        self.set_title
+        self.set_text_edit()
         self.main_table_creator()
 
     def settings(self):
@@ -68,6 +76,18 @@ class App():
 
     def accept_line(self):
         print("accept line")
+
+    #def set_title(self):
+     #   if self.active_day == "Tomorow":
+      #      self.title.setText(self.get_page.massage_tomorow)
+       # else:
+        #    self.title.setText(self.get_page.massage_today)
+
+    def set_text_edit(self):
+        if self.active_day == "Tomorow":
+            self.text_edit.setText(self.get_page.massage_tomorow)
+        else:
+            self.text_edit.setText(self.get_page.massage_today)
 
     def main_table_creator(self):
         table = []

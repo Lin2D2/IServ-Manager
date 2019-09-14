@@ -23,7 +23,6 @@ class App():
         self.payload = None
         self.active_day = "Today"
         self.main_table = window.findChild(QtWidgets.QTableWidget, 'tableWidget')
-        self.main_table.setColumnCount(12)
 
         line_edit = window.findChild(QtWidgets.QLineEdit, 'lineEdit')
 

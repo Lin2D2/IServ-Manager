@@ -6,7 +6,7 @@ from pprint import pprint
 from bs4 import BeautifulSoup
 
 
-class Get_Page():
+class Table_Util():
     def __init__(self, payload):
         self.payload = payload
         self.url_s = 'https://gymherderschule.de/iserv/login_check'
@@ -20,15 +20,21 @@ class Get_Page():
         self.massage_tomorow = None
         self.content_tomorow = None
         self.get_page()
+        self.filter_key = None
+        self.active_day = None
 
     def update(self):
         self.get_page()
 
+    def set_filter(self, key):
+        self.set_filter_key = key
+
+    def set_active_day(self, day):
+        self.active_day = day
 
     @staticmethod
     def soup(file):
         return BeautifulSoup(file, "html.parser")
-
 
     def formatting(self, source):
         raw_list = self.soup(source).find(class_="mon_list")
@@ -40,7 +46,6 @@ class Get_Page():
         contents = re.split("\n", contents)
         return title, massage, contents
 
-
     def get_page(self):
         sess = requests.Session()
         sess.post(self.url_s, data=self.payload, headers=self.headers)
@@ -50,17 +55,8 @@ class Get_Page():
         self.title_today, self.massage_today, self.content_today = self.formatting(request_data_today.content)
         self.title_tomorow, self.massage_tomorow, self.content_tomorow = self.formatting(request_data_tomorow.content)
 
-
-class Filter():
-    def __init__(self):
-        self.filter_key = None
-        self.active_day = None
-
-    def set_filter(self, key):
-        self.set_filter_key = key
-
-    def set_active_day(self, day):
-        self.active_day = day
+    def filter_table(self):
+        pass
 
 
 

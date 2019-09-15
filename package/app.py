@@ -5,7 +5,7 @@ import os.path
 from package.util.slash import slash
 from package.ui.window import Window
 from package.app_dialog import App_Dialog
-from package.table_util import Get_Page, Filter
+from package.table_util import Table_Util
 
 class App():
     def __init__(self):
@@ -21,7 +21,7 @@ class App():
         self.accept_line_button = window.findChild(QtWidgets.QPushButton, 'pushButton_accept_line')
         self.accept_line_button.clicked[bool].connect(self.accept_line)
 
-        self.filter = None
+        self.table_util = None
         self.filter_activated = False
         self.payload = None
         self.active_day = "Today"
@@ -60,14 +60,14 @@ class App():
 
     def set_payload(self, username, password):
         self.payload = {'_username': username, '_password': password}
-        self.get_page = Get_Page(self.payload)
+        self.table_util = Table_Util(self.payload)
         self.set_title()
         self.set_text_edit()
         self.main_table_creator()
 
 
     def update(self):
-        self.get_page.update()
+        self.table_util.update()
         self.set_title()
         self.set_text_edit()
         self.main_table_creator()
@@ -78,10 +78,8 @@ class App():
     def accept_line(self, down):
         if down:
             self.accept_line_button.setText("Deactivated")
-            if not self.filter:
-                self.filter = Filter()
-            self.filter.set_filter(self.line_edit.text())
-            self.filter.set_active_day(self.active_day)
+            self.table_util.set_filter(self.line_edit.text())
+            self.table_util.set_active_day(self.active_day)
             self.filter_activated = True
             self.main_table_creator()
         else:
@@ -92,25 +90,25 @@ class App():
 
     def set_title(self):
         if self.active_day == "Tomorow":
-            self.title.setText(self.get_page.title_tomorow)
+            self.title.setText(self.table_util.title_tomorow)
         else:
-            self.title.setText(self.get_page.title_today)
+            self.title.setText(self.table_util.title_today)
 
     def set_text_edit(self):
         if self.active_day == "Tomorow":
-            self.text_edit.setText(self.get_page.massage_tomorow)
+            self.text_edit.setText(self.table_util.massage_tomorow)
         else:
-            self.text_edit.setText(self.get_page.massage_today)
+            self.text_edit.setText(self.table_util.massage_today)
 
     def main_table_creator(self):
         table = []
         if self.filter_activated:
-            table_content = None
+            table_content = self.table_util.filter_table()
         else:
             if self.active_day == "Tomorow":
-                table_content = self.get_page.content_tomorow
+                table_content = self.table_util.content_tomorow
             else:
-                table_content = self.get_page.content_today
+                table_content = self.table_util.content_today
 
         for row in table_content:
             colums = row.split("|")

@@ -28,6 +28,7 @@ class App():
         self.main_table = window.findChild(QtWidgets.QTableWidget, 'tableWidget')
 
         self.line_edit = window.findChild(QtWidgets.QLineEdit, 'lineEdit')
+        self.line_edit.editingFinished.connect(self.line_edit_changed)
 
         self.title = window.findChild(QtWidgets.QLabel, 'label')
 
@@ -74,6 +75,10 @@ class App():
 
     def settings(self):
         print("settings")
+
+    def line_edit_changed(self):
+        self.table_util.set_filter(self.line_edit.text())
+        self.main_table_creator()
 
     def accept_line(self, down):
         if down:

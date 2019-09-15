@@ -11,6 +11,7 @@ class TableUtil():
         self.url_today = 'https://gymherderschule.de/iserv/infodisplay/file/23/infodisplay/0/SchuelerOnline/subst_001.htm'
         self.url_tomorow = 'https://gymherderschule.de/iserv/infodisplay/file/23/infodisplay/0/SchuelerOnline/subst_002.htm'
         self.headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/12.0'}
+        self.table_header = None
         self.title_today = None
         self.massage_today = None
         self.content_today = None
@@ -48,8 +49,13 @@ class TableUtil():
             colums = row.split("|")
             del colums[0]
             table.append(colums)
-        del table[0]
-        del table[0]
+        i = 0
+        while i < 3:
+            i += 1
+            del table[0]
+            if i == 2:
+                self.table_header = table[0]
+
         del table[-1]
         return title, massage, table
 

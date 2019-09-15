@@ -69,5 +69,5 @@ class TableUtil():
         else:
             content_of = self.content_today
         for content in content_of:
-            if str(content[1]) == 'Klasse(n)' or content[1].find(str(self.filter_key)) != -1:
+            if str(content[1]) == 'Klasse(n)' or re.match(".*" + str(self.filter_key) + ".*", content[1], re.IGNORECASE):
                 self.filtered_content.append(content)

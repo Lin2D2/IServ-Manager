@@ -57,7 +57,7 @@ class TableUtil():
                 self.table_header = table[0]
         del table[-1]
         massage = re.sub("\n", "", massage, 1)
-        if massage is None:
+        if massage == "None":
             massage = "Es gibt keine Nachrichten zum Tag"
         return title, massage, table
 

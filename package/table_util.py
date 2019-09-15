@@ -21,13 +21,14 @@ class Table_Util():
         self.content_tomorow = None
         self.get_page()
         self.filter_key = None
+        self.filtered_content = None
         self.active_day = None
 
     def update(self):
         self.get_page()
 
     def set_filter(self, key):
-        self.set_filter_key = key
+        self.filter_key = key
 
     def set_active_day(self, day):
         self.active_day = day
@@ -51,6 +52,7 @@ class Table_Util():
             table.append(colums)
         del table[0]
         del table[0]
+        del table[-1]
         return title, massage, table
 
     def get_page(self):
@@ -63,7 +65,15 @@ class Table_Util():
         self.title_tomorow, self.massage_tomorow, self.content_tomorow = self.formatting(request_data_tomorow.content)
 
     def filter_table(self):
-        print(self.content_today)
+        self.filtered_content = []
+        if self.active_day == "Tomorow":
+            content_of = self.content_tomorow
+        else:
+            content_of = self.content_today
+        for content in content_of:
+            if str(content[1]) == 'Klasse(n)' or content[1].find(str(self.filter_key)) != -1:
+                self.filtered_content.append(content)
+        print(self.filtered_content)
 
 
 

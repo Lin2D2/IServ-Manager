@@ -81,6 +81,7 @@ class App():
             self.table_util.set_filter(self.line_edit.text())
             self.table_util.set_active_day(self.active_day)
             self.filter_activated = True
+            self.table_util.filter_table()
             self.main_table_creator()
         else:
             self.accept_line_button.setText("Activated")
@@ -102,7 +103,7 @@ class App():
 
     def main_table_creator(self):
         if self.filter_activated:
-            table = self.table_util.filter_table()
+            table = self.table_util.filtered_content
         else:
             if self.active_day == "Tomorow":
                 table = self.table_util.content_tomorow

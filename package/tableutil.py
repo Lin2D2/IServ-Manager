@@ -55,8 +55,10 @@ class TableUtil():
             del table[0]
             if i == 2:
                 self.table_header = table[0]
-
         del table[-1]
+        massage = re.sub("\n", "", massage, 1)
+        if massage is None:
+            massage = "Es gibt keine Nachrichten zum Tag"
         return title, massage, table
 
     def get_page(self):

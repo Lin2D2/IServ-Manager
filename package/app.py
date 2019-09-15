@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import *
 import sys
 import os.path
 from package.util.slash import slash
+from package.util.datetime_day import date_and_day
 from package.ui.window import Window
 from package.app_dialog import App_Dialog
 from package.tableutil import TableUtil
@@ -31,6 +32,7 @@ class App():
         self.line_edit.editingFinished.connect(self.line_edit_changed)
 
         self.title = window.findChild(QtWidgets.QLabel, 'label')
+        self.title.setText(date_and_day())
 
         self.text_edit = window.findChild(QtWidgets.QTextEdit, 'textEdit')
 

@@ -5,7 +5,7 @@ import os.path
 from package.util.slash import slash
 from package.ui.window import Window
 from package.app_dialog import App_Dialog
-from package.table_util import Table_Util
+from package.tableutil import TableUtil
 
 class App():
     def __init__(self):
@@ -60,7 +60,7 @@ class App():
 
     def set_payload(self, username, password):
         self.payload = {'_username': username, '_password': password}
-        self.table_util = Table_Util(self.payload)
+        self.table_util = TableUtil(self.payload)
         self.set_title()
         self.set_text_edit()
         self.main_table_creator()
@@ -79,9 +79,7 @@ class App():
         if down:
             self.accept_line_button.setText("Deactivated")
             self.table_util.set_filter(self.line_edit.text())
-            self.table_util.set_active_day(self.active_day)
             self.filter_activated = True
-            self.table_util.filter_table()
             self.main_table_creator()
         else:
             self.accept_line_button.setText("Activated")
@@ -103,6 +101,8 @@ class App():
 
     def main_table_creator(self):
         if self.filter_activated:
+            self.table_util.set_active_day(self.active_day)
+            self.table_util.filter_table()
             table = self.table_util.filtered_content
         else:
             if self.active_day == "Tomorow":

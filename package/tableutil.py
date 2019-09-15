@@ -1,12 +1,10 @@
-# the location and name of this file is going to change!
 import requests
 import time
 import re
-from pprint import pprint
 from bs4 import BeautifulSoup
 
 
-class Table_Util():
+class TableUtil():
     def __init__(self, payload):
         self.payload = payload
         self.url_s = 'https://gymherderschule.de/iserv/login_check'
@@ -73,8 +71,3 @@ class Table_Util():
         for content in content_of:
             if str(content[1]) == 'Klasse(n)' or content[1].find(str(self.filter_key)) != -1:
                 self.filtered_content.append(content)
-        print(self.filtered_content)
-
-
-
-

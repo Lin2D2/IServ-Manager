@@ -51,3 +51,17 @@ class Get_Page():
         self.title_tomorow, self.massage_tomorow, self.content_tomorow = self.formatting(request_data_tomorow.content)
 
 
+class Filter():
+    def __init__(self):
+        self.filter_key = None
+        self.active_day = None
+
+    def set_filter(self, key):
+        self.set_filter_key = key
+
+    def set_active_day(self, day):
+        self.active_day = day
+
+
+
+

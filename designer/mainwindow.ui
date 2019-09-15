@@ -303,7 +303,10 @@
             <item>
              <widget class="QPushButton" name="pushButton_accept_line">
               <property name="text">
-               <string>Actived</string>
+               <string>Activated</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
               </property>
              </widget>
             </item>

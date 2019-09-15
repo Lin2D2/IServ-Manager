@@ -5,7 +5,7 @@ import os.path
 from package.util.slash import slash
 from package.ui.window import Window
 from package.app_dialog import App_Dialog
-from package.table_util import Get_Page
+from package.table_util import Get_Page, Filter
 
 class App():
     def __init__(self):
@@ -18,13 +18,16 @@ class App():
         update_button.clicked.connect(self.update)
         settings_button = window.findChild(QtWidgets.QPushButton, 'pushButton_settings')
         settings_button.clicked.connect(self.settings)
-        accept_line_button = window.findChild(QtWidgets.QPushButton, 'pushButton_accept_line')
-        accept_line_button.clicked.connect(self.accept_line)
+        self.accept_line_button = window.findChild(QtWidgets.QPushButton, 'pushButton_accept_line')
+        self.accept_line_button.clicked[bool].connect(self.accept_line)
+
+        self.filter = None
+        self.filter_activated = False
         self.payload = None
         self.active_day = "Today"
         self.main_table = window.findChild(QtWidgets.QTableWidget, 'tableWidget')
 
-        line_edit = window.findChild(QtWidgets.QLineEdit, 'lineEdit')
+        self.line_edit = window.findChild(QtWidgets.QLineEdit, 'lineEdit')
 
         self.title = window.findChild(QtWidgets.QLabel, 'label')
 
@@ -64,7 +67,6 @@ class App():
 
 
     def update(self):
-        print("update")
         self.get_page.update()
         self.set_title()
         self.set_text_edit()
@@ -73,9 +75,20 @@ class App():
     def settings(self):
         print("settings")
 
+    def accept_line(self, down):
+        if down:
+            self.accept_line_button.setText("Deactivated")
+            if not self.filter:
+                self.filter = Filter()
+            self.filter.set_filter(self.line_edit.text())
+            self.filter.set_active_day(self.active_day)
+            self.filter_activated = True
+            self.main_table_creator()
+        else:
+            self.accept_line_button.setText("Activated")
+            self.filter_activated = False
+            self.update()
 
-    def accept_line(self):
-        print("accept line")
 
     def set_title(self):
         if self.active_day == "Tomorow":
@@ -91,11 +104,13 @@ class App():
 
     def main_table_creator(self):
         table = []
-
-        if self.active_day == "Tomorow":
-            table_content = self.get_page.content_tomorow
+        if self.filter_activated:
+            table_content = None
         else:
-            table_content = self.get_page.content_today
+            if self.active_day == "Tomorow":
+                table_content = self.get_page.content_tomorow
+            else:
+                table_content = self.get_page.content_today
 
         for row in table_content:
             colums = row.split("|")

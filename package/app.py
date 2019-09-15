@@ -115,6 +115,8 @@ class App():
             else:
                 table = self.table_util.content_today
 
+        self.main_table.setHorizontalHeaderLabels(table[0])
+        del table[0]
         self.main_table.setRowCount(len(table))
         for rows in table:
             row = rows

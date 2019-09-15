@@ -2,6 +2,8 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 import sys
 import os.path
+import keyring
+import json
 from package.util.slash import slash
 from package.util.datetime_day import date_and_day
 from package.ui.window import Window
@@ -10,6 +12,7 @@ from package.tableutil import TableUtil
 
 class App():
     def __init__(self):
+        self._service_name = "IServ-Manager"
         app = QtWidgets.QApplication(sys.argv)
         window = Window()
 
@@ -49,6 +52,24 @@ class App():
     def first_start(self):
         if not os.path.exists('package' + slash + 'util' + slash + 'settings.json'):
             App_Dialog(self)     # fist of we wont create such file because we need password an username for each session
+        else:
+            with open('package' + slash + 'util' + slash + 'settings.json', "r") as json_file:
+                data = json.load(json_file)
+                self.payload = {'_username': data["users"][0]["_username"], '_password': None}
+            self.get_user_keyring_password(self.payload["_username"])
+            self.set_payload(self.payload["_username"], self.payload["_password"])
+
+    def get_user_keyring_password(self, username):
+        self.payload = {'_username': username, '_password': keyring.get_password(self._service_name, username)}
+
+    def set_user_keyring_password(self):
+        keyring.set_password(self._service_name, self.payload["_username"], self.payload["_password"])
+        with open('package' + slash + 'util' + slash + 'settings.json', "w+") as json_file:
+            data = {}
+            data["users"] = []
+            data["users"].append({"_username": self.payload["_username"]})
+
+            json.dump(data, json_file)
 
     def change_day(self):
         if self.change_day_button.text() == "Tomorow":

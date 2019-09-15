@@ -25,5 +25,6 @@ class App_Dialog():
 
     def dialog_ok(self):
         self.parent.set_payload(self.username_line.text(), self.password_line.text())
+        self.parent.set_user_keyring_password()
         self.dialog.close()
 

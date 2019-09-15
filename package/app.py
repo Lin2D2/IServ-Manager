@@ -101,22 +101,15 @@ class App():
             self.text_edit.setText(self.table_util.massage_today)
 
     def main_table_creator(self):
-        table = []
         if self.filter_activated:
-            table_content = self.table_util.filter_table()
+            table = self.table_util.filter_table()
         else:
             if self.active_day == "Tomorow":
-                table_content = self.table_util.content_tomorow
+                table = self.table_util.content_tomorow
             else:
-                table_content = self.table_util.content_today
+                table = self.table_util.content_today
 
-        for row in table_content:
-            colums = row.split("|")
-            del colums[0]
-            table.append(colums)
-        del table[0]
-        del table[0]
-        self.main_table.setRowCount(len(table_content))
+        self.main_table.setRowCount(len(table))
         for rows in table:
             row = rows
             for colum in row:

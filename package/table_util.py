@@ -44,7 +44,14 @@ class Table_Util():
         raw_massage = self.soup(source).find(class_="info")
         massage = self.soup(str(raw_massage)).get_text(separator="")
         contents = re.split("\n", contents)
-        return title, massage, contents
+        table = []
+        for row in contents:
+            colums = row.split("|")
+            del colums[0]
+            table.append(colums)
+        del table[0]
+        del table[0]
+        return title, massage, table
 
     def get_page(self):
         sess = requests.Session()
@@ -56,7 +63,7 @@ class Table_Util():
         self.title_tomorow, self.massage_tomorow, self.content_tomorow = self.formatting(request_data_tomorow.content)
 
     def filter_table(self):
-        pass
+        print(self.content_today)
 
 
 

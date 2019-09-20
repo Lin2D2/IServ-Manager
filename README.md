@@ -5,4 +5,4 @@ A small tool for IServ
 
 1. settings for the application
 
-2. save password in key chain( kwallet, ["https://keyring.readthedocs.io/en/latest/"] )
+2. save password in key chain( kwallet, ["https://keyring.readthedocs.io/en/latest/"] ) (Done)
